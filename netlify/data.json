@@ -1,96 +1,128 @@
 {
-  "generated_at": "2026-06-16T23:01:51.064945+00:00",
+  "generated_at": "2026-06-16T23:48:25.123162+00:00",
   "competition": "orbit-wars",
   "team": "theburroship",
   "my_rank": null,
   "my_score": null,
-  "leaderboard_size": 12,
+  "leaderboard_size": 20,
   "submissions": [
     {
-      "Authentication required to call the Kaggle API.": "First",
-      "null": [
-        " you will need a Kaggle account. You can sign up at"
-      ]
+      "ref": "53756946",
+      "fileName": "main.py",
+      "description": "trained bot v1 - 75pct vs v2",
+      "date": "2026-06-16 23:47:46.640000",
+      "publicScore": "",
+      "status": "SubmissionStatus.PENDING"
     },
     {
-      "Authentication required to call the Kaggle API.": "  https://www.kaggle.com/account/login"
-    },
-    {
-      "Authentication required to call the Kaggle API.": "Recommended: log in with OAuth via a web-based authorization flow."
-    },
-    {
-      "Authentication required to call the Kaggle API.": "No token to manage; credentials are cached locally for you."
-    },
-    {
-      "Authentication required to call the Kaggle API.": "    kaggle auth login"
-    },
-    {
-      "Authentication required to call the Kaggle API.": "If you'd rather not use OAuth",
-      "null": [
-        " generate an API token at"
-      ]
-    },
-    {
-      "Authentication required to call the Kaggle API.": "  https://www.kaggle.com/settings/api  (click \"Generate New Token\" under \"API\")"
-    },
-    {
-      "Authentication required to call the Kaggle API.": "and supply it to the CLI in one of these ways:"
-    },
-    {
-      "Authentication required to call the Kaggle API.": "  Option A: Environment variable"
-    },
-    {
-      "Authentication required to call the Kaggle API.": "    export KAGGLE_API_TOKEN=xxxxxxxxxxxxxx  # token copied from the settings UI"
-    },
-    {
-      "Authentication required to call the Kaggle API.": "  Option B: API token file"
-    },
-    {
-      "Authentication required to call the Kaggle API.": "    Save the token to ~/.kaggle/access_token"
+      "ref": "53754759",
+      "fileName": "main.py",
+      "description": "coordinated ROI bot v2",
+      "date": "2026-06-16 21:01:33.410000",
+      "publicScore": "463.4",
+      "status": "SubmissionStatus.COMPLETE"
     }
   ],
   "leaderboard_top": [
     {
-      "Authentication required to call the Kaggle API.": "First",
-      "null": [
-        " you will need a Kaggle account. You can sign up at"
-      ]
+      "teamName": "Isaiah @ Tufa Labs",
+      "score": "1759.8",
+      "submissionDate": "2026-06-14 01:18:29.006000"
     },
     {
-      "Authentication required to call the Kaggle API.": "  https://www.kaggle.com/account/login"
+      "teamName": "Jake Will",
+      "score": "1754.4",
+      "submissionDate": "2026-06-09 23:23:04.010000"
     },
     {
-      "Authentication required to call the Kaggle API.": "Recommended: log in with OAuth via a web-based authorization flow."
+      "teamName": "flg",
+      "score": "1652.9",
+      "submissionDate": "2026-06-16 15:58:10.540000"
     },
     {
-      "Authentication required to call the Kaggle API.": "No token to manage; credentials are cached locally for you."
+      "teamName": "Boey",
+      "score": "1601.0",
+      "submissionDate": "2026-06-16 06:27:44.913000"
     },
     {
-      "Authentication required to call the Kaggle API.": "    kaggle auth login"
+      "teamName": "Hober Malloc",
+      "score": "1598.0",
+      "submissionDate": "2026-06-16 08:42:45.886000"
     },
     {
-      "Authentication required to call the Kaggle API.": "If you'd rather not use OAuth",
-      "null": [
-        " generate an API token at"
-      ]
+      "teamName": "M & J & M.ver2",
+      "score": "1574.0",
+      "submissionDate": "2026-06-16 22:36:31.313000"
     },
     {
-      "Authentication required to call the Kaggle API.": "  https://www.kaggle.com/settings/api  (click \"Generate New Token\" under \"API\")"
+      "teamName": "Audun Ljone Henriksen",
+      "score": "1573.9",
+      "submissionDate": "2026-06-16 22:28:46.860000"
     },
     {
-      "Authentication required to call the Kaggle API.": "and supply it to the CLI in one of these ways:"
+      "teamName": "Ender",
+      "score": "1570.2",
+      "submissionDate": "2026-06-16 17:10:28.443000"
     },
     {
-      "Authentication required to call the Kaggle API.": "  Option A: Environment variable"
+      "teamName": "Vadasz & Ascalon",
+      "score": "1551.7",
+      "submissionDate": "2026-06-13 14:50:58.533000"
     },
     {
-      "Authentication required to call the Kaggle API.": "    export KAGGLE_API_TOKEN=xxxxxxxxxxxxxx  # token copied from the settings UI"
+      "teamName": "Felix M Neumann",
+      "score": "1534.7",
+      "submissionDate": "2026-06-13 11:12:42.506000"
     },
     {
-      "Authentication required to call the Kaggle API.": "  Option B: API token file"
+      "teamName": "TonyK",
+      "score": "1528.4",
+      "submissionDate": "2026-06-12 23:19:58.253000"
     },
     {
-      "Authentication required to call the Kaggle API.": "    Save the token to ~/.kaggle/access_token"
+      "teamName": "Gregor Lied",
+      "score": "1509.9",
+      "submissionDate": "2026-06-16 12:52:45.076000"
+    },
+    {
+      "teamName": "213tubo",
+      "score": "1505.1",
+      "submissionDate": "2026-06-16 12:34:14.306000"
+    },
+    {
+      "teamName": "Nebraskinator",
+      "score": "1501.3",
+      "submissionDate": "2026-06-14 03:21:46.590000"
+    },
+    {
+      "teamName": "moriiiiiiiiim",
+      "score": "1487.8",
+      "submissionDate": "2026-06-16 08:32:32.666000"
+    },
+    {
+      "teamName": "Scool",
+      "score": "1485.5",
+      "submissionDate": "2026-06-16 19:16:37.806000"
+    },
+    {
+      "teamName": "Controlvector",
+      "score": "1481.3",
+      "submissionDate": "2026-06-09 19:40:11.343000"
+    },
+    {
+      "teamName": "dragon warrior",
+      "score": "1477.7",
+      "submissionDate": "2026-06-16 21:51:50.010000"
+    },
+    {
+      "teamName": "Roche Overflow",
+      "score": "1466.9",
+      "submissionDate": "2026-06-16 23:32:40.556000"
+    },
+    {
+      "teamName": "One Man Wrecking Machine",
+      "score": "1461.4",
+      "submissionDate": "2026-06-16 13:11:44.393000"
     }
   ]
 }
