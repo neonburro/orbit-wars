@@ -2,41 +2,66 @@
 
 Kaggle competition: https://www.kaggle.com/competitions/orbit-wars
 
-## Strategy (v2)
+This is a Kaggle bot competition. There is no web app, server, or deploy step.
+You write main.py, the kaggle CLI uploads it, and Kaggle runs it on their
+servers against other submitted bots. No Netlify, no hosting, nothing like that.
+This GitHub repo is version control only.
 
-`main.py` is a coordinated ROI bot. Over v1 it adds:
+## Current submission: v2 (main.py)
 
-- Coordinated multi-planet captures. A single strong target can be taken by combining ships from several of our planets in the same turn, gathering from the closest planets first.
-- Defense. Detects enemy fleets whose heading aligns with one of our planets and reserves enough ships there to survive the hit, instead of emptying a planet about to be attacked.
-- Anti-leader targeting (4p). Computes every player's total strength and adds a scoring bonus for attacking the current leader's planets, so in a free-for-all we gang the strongest player rather than feed them.
-- Comet hunting. Comets are free production while they last, so capturing them gets a scoring bonus and they are held with a minimal garrison since they expire.
-- Target leading and sun avoidance (carried over): fleets aim where orbiting planets will be, and any launch whose path crosses the sun is discarded.
+A coordinated ROI bot:
 
-Verified locally: beats v1 9-3 from both seat positions, 12-0 vs random, wins 4-player games clean. About 1.1 ms per turn against a 1000 ms timeout.
+- Coordinated multi-planet captures. One strong target can be taken by combining ships from several planets in the same turn, gathering from the closest first.
+- Defense. Detects enemy fleets aimed at our planets and reserves enough ships to survive the hit.
+- Anti-leader targeting (4p). Tallies every player's strength and prioritizes attacking whoever is winning.
+- Comet hunting. Captures comets for free production, holds them with a minimal garrison.
+- Target leading and sun avoidance. Fleets aim where orbiting planets will be, and any launch crossing the sun is discarded.
+
+Verified: beats the v1 sniper-style bot 9-3 from both seats, 12-0 vs random, ~1.1 ms per turn vs a 1000 ms timeout.
+
+## The arena
+
+arena.py benchmarks any two bots head to head across many seeds from BOTH seat
+positions, so first-move advantage cancels out. This is how you tell whether a
+change is actually better instead of guessing.
+
+    python3 arena.py main.py v2.py 15
+
+It reports a win record and flags any games where a bot errored.
+
+## v3 experiments (not submitted)
+
+v3 added: crediting our own inbound fleets to avoid over-sending, game-phase
+awareness (expand early, consolidate late), and active defensive reserves.
+Across repeated arena runs v3 and its variants (v3b lower reserves, v3c looser
+inbound crediting) all landed at 43 to 50 percent against v2. None beat it
+cleanly, so v2 stays the submission. The arena caught this before submitting.
+
+The variant files are kept for further iteration:
+main_v3.py, main_v3b.py, main_v3c.py, v2.py (the current main.py).
 
 ## Install on macOS
 
-The system python3 is too old and only sees kaggle-environments up to 1.18. Install a modern Python via Homebrew first:
+System python3 is too old. Use Homebrew Python, and pygame needs SDL headers:
 
     brew install python
-    python3 -m pip install --user "kaggle-environments>=1.28.0" kaggle kagglehub
+    brew install sdl2 sdl2_image sdl2_mixer sdl2_ttf
+    python3 -m pip install --break-system-packages "kaggle-environments>=1.28.0" kaggle kagglehub
 
-## Local testing
+## Local test
 
     python3 -c "from kaggle_environments import make; env=make('orbit_wars', configuration={'seed':42}, debug=True); env.run(['main.py','random']); print([(i,s['reward']) for i,s in enumerate(env.steps[-1])])"
 
-## Submitting
+## Auth and submit
 
-    mkdir -p ~/.kaggle
-    nano ~/.kaggle/access_token
-    chmod 600 ~/.kaggle/access_token
+    kaggle auth login
     kaggle competitions submit orbit-wars -f main.py -m "coordinated ROI bot v2"
+    kaggle competitions submissions orbit-wars
 
-You get up to 5 submissions per day. Only your latest 2 count for final scoring, so iterate freely.
+Up to 5 submissions per day. Only the latest 2 count for final scoring.
 
-## Ideas for v3
+## Next ideas to try in the arena
 
-- Account for our own fleets already inbound to a target so we do not over-send.
-- Snipe enemy fleets mid-flight by timing a capture of their destination.
-- Expansion vs consolidation phase based on turn number and board control.
-- Tune the leader bonus and garrison ratios via self-play sweeps.
+- Predict full combat resolution a few turns ahead, not just garrison plus production.
+- Snipe enemy fleets by timing a capture of their destination planet.
+- Tune reserve ratios and the leader bonus with a parameter sweep through arena.py.

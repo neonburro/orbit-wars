@@ -5,3 +5,5 @@ replays/
 logs/
 submission.tar.gz
 .kaggle/
+# Local Netlify folder
+.netlify

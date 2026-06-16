@@ -1,0 +1,96 @@
+{
+  "generated_at": "2026-06-16T23:01:51.064945+00:00",
+  "competition": "orbit-wars",
+  "team": "theburroship",
+  "my_rank": null,
+  "my_score": null,
+  "leaderboard_size": 12,
+  "submissions": [
+    {
+      "Authentication required to call the Kaggle API.": "First",
+      "null": [
+        " you will need a Kaggle account. You can sign up at"
+      ]
+    },
+    {
+      "Authentication required to call the Kaggle API.": "  https://www.kaggle.com/account/login"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "Recommended: log in with OAuth via a web-based authorization flow."
+    },
+    {
+      "Authentication required to call the Kaggle API.": "No token to manage; credentials are cached locally for you."
+    },
+    {
+      "Authentication required to call the Kaggle API.": "    kaggle auth login"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "If you'd rather not use OAuth",
+      "null": [
+        " generate an API token at"
+      ]
+    },
+    {
+      "Authentication required to call the Kaggle API.": "  https://www.kaggle.com/settings/api  (click \"Generate New Token\" under \"API\")"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "and supply it to the CLI in one of these ways:"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "  Option A: Environment variable"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "    export KAGGLE_API_TOKEN=xxxxxxxxxxxxxx  # token copied from the settings UI"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "  Option B: API token file"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "    Save the token to ~/.kaggle/access_token"
+    }
+  ],
+  "leaderboard_top": [
+    {
+      "Authentication required to call the Kaggle API.": "First",
+      "null": [
+        " you will need a Kaggle account. You can sign up at"
+      ]
+    },
+    {
+      "Authentication required to call the Kaggle API.": "  https://www.kaggle.com/account/login"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "Recommended: log in with OAuth via a web-based authorization flow."
+    },
+    {
+      "Authentication required to call the Kaggle API.": "No token to manage; credentials are cached locally for you."
+    },
+    {
+      "Authentication required to call the Kaggle API.": "    kaggle auth login"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "If you'd rather not use OAuth",
+      "null": [
+        " generate an API token at"
+      ]
+    },
+    {
+      "Authentication required to call the Kaggle API.": "  https://www.kaggle.com/settings/api  (click \"Generate New Token\" under \"API\")"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "and supply it to the CLI in one of these ways:"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "  Option A: Environment variable"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "    export KAGGLE_API_TOKEN=xxxxxxxxxxxxxx  # token copied from the settings UI"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "  Option B: API token file"
+    },
+    {
+      "Authentication required to call the Kaggle API.": "    Save the token to ~/.kaggle/access_token"
+    }
+  ]
+}
