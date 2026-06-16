@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+orbit-wars-data/
+replays/
+logs/
+submission.tar.gz
+.kaggle/
