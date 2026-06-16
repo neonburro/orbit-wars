@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T23:48:25.123162+00:00",
+  "generated_at": "2026-06-16T23:50:00.234285+00:00",
   "competition": "orbit-wars",
   "team": "theburroship",
   "my_rank": null,
@@ -25,14 +25,14 @@
   ],
   "leaderboard_top": [
     {
-      "teamName": "Isaiah @ Tufa Labs",
-      "score": "1759.8",
-      "submissionDate": "2026-06-14 01:18:29.006000"
+      "teamName": "Jake Will",
+      "score": "1759.0",
+      "submissionDate": "2026-06-09 23:23:04.010000"
     },
     {
-      "teamName": "Jake Will",
-      "score": "1754.4",
-      "submissionDate": "2026-06-09 23:23:04.010000"
+      "teamName": "Isaiah @ Tufa Labs",
+      "score": "1755.3",
+      "submissionDate": "2026-06-14 01:18:29.006000"
     },
     {
       "teamName": "flg",
@@ -40,23 +40,18 @@
       "submissionDate": "2026-06-16 15:58:10.540000"
     },
     {
-      "teamName": "Boey",
-      "score": "1601.0",
-      "submissionDate": "2026-06-16 06:27:44.913000"
-    },
-    {
       "teamName": "Hober Malloc",
       "score": "1598.0",
       "submissionDate": "2026-06-16 08:42:45.886000"
     },
     {
-      "teamName": "M & J & M.ver2",
-      "score": "1574.0",
-      "submissionDate": "2026-06-16 22:36:31.313000"
+      "teamName": "Boey",
+      "score": "1596.1",
+      "submissionDate": "2026-06-16 06:27:44.913000"
     },
     {
       "teamName": "Audun Ljone Henriksen",
-      "score": "1573.9",
+      "score": "1579.4",
       "submissionDate": "2026-06-16 22:28:46.860000"
     },
     {
@@ -68,6 +63,11 @@
       "teamName": "Vadasz & Ascalon",
       "score": "1551.7",
       "submissionDate": "2026-06-13 14:50:58.533000"
+    },
+    {
+      "teamName": "M & J & M.ver2",
+      "score": "1544.3",
+      "submissionDate": "2026-06-16 22:36:31.313000"
     },
     {
       "teamName": "Felix M Neumann",
@@ -96,13 +96,8 @@
     },
     {
       "teamName": "moriiiiiiiiim",
-      "score": "1487.8",
+      "score": "1483.9",
       "submissionDate": "2026-06-16 08:32:32.666000"
-    },
-    {
-      "teamName": "Scool",
-      "score": "1485.5",
-      "submissionDate": "2026-06-16 19:16:37.806000"
     },
     {
       "teamName": "Controlvector",
@@ -110,8 +105,13 @@
       "submissionDate": "2026-06-09 19:40:11.343000"
     },
     {
+      "teamName": "Scool",
+      "score": "1479.9",
+      "submissionDate": "2026-06-16 19:16:37.806000"
+    },
+    {
       "teamName": "dragon warrior",
-      "score": "1477.7",
+      "score": "1474.7",
       "submissionDate": "2026-06-16 21:51:50.010000"
     },
     {
@@ -121,7 +121,7 @@
     },
     {
       "teamName": "One Man Wrecking Machine",
-      "score": "1461.4",
+      "score": "1465.0",
       "submissionDate": "2026-06-16 13:11:44.393000"
     }
   ]
