@@ -36,19 +36,26 @@
       <div class="eyebrow">team burroship · kaggle campaign</div>
       <h1>the burroship<span class="dot">.</span></h1>
       <p class="lede">Command the fleet. Conquer the void. A few burros loose in the cosmos, built at altitude.</p>
-      <div class="scroll-cue">scroll for mission control ↓</div>
     </div>
   </header>
   <div class="wrap">
     <div class="stamp-row"><div class="stamp" id="stamp">awaiting data</div><button class="refresh-btn" id="refresh-btn" title="Refresh" aria-label="Refresh"><span class="ico"></span></button></div>
-    <div class="tabs">
-      <button class="tab active" data-tab="ship">The Burroship</button>
-      <button class="tab" data-tab="battles">Battles</button>
-      <button class="tab" data-tab="fleet">The Fleet</button>
-    </div>
-    <div class="panel active" id="panel-ship"></div>
-    <div class="panel" id="panel-battles"></div>
-    <div class="panel" id="panel-fleet"></div>
+
+    <section class="block" id="block-ship">
+      <div class="section-head"><h2>The Burroship</h2><span class="section-tag">flagship status</span></div>
+      <div id="panel-ship"></div>
+    </section>
+
+    <section class="block" id="block-battles">
+      <div class="section-head"><h2>Battles</h2><span class="section-tag">live games + replays</span></div>
+      <div id="panel-battles"></div>
+    </section>
+
+    <section class="block" id="block-fleet">
+      <div class="section-head"><h2>The Fleet</h2><span class="section-tag">build log</span></div>
+      <div id="panel-fleet"></div>
+    </section>
+
     <footer id="footer"></footer>
   </div>
 

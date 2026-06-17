@@ -103,9 +103,9 @@ function renderBattles(data){
   var featured=eps.find(function(e){return e.replayable;})||eps[0];
   html+='<div class="replay-feature">';
   html+='<div class="rf-head"><div class="rf-title"><span class="live"></span> game replay</div></div>';
-  html+='<div style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);line-height:1.6">Watch a real match the burroship played on Kaggle. Planets orbit the sun, fleets fly between them, ship counts update each turn. Pick an episode below to load it.</div>';
+  html+='<div class="rf-desc">Watch a real match the burroship played on Kaggle. Planets orbit the sun, fleets fly between them, ship counts update each turn. Pick an episode below to load it.</div>';
   if(featured){
-    html+='<div style="margin-top:16px"><button class="speed" id="open-featured" data-ep="'+esc(featured.id)+'" data-me="'+(featured.meIndex!=null?featured.meIndex:0)+'" style="border-color:var(--sky);color:var(--sky)">&#9654; watch latest game</button></div>';
+    html+='<div class="rf-actions"><button class="btn-primary" id="open-featured" data-ep="'+esc(featured.id)+'" data-me="'+(featured.meIndex!=null?featured.meIndex:0)+'">&#9654;&nbsp; Watch latest game</button></div>';
   }
   html+='</div>';
 
@@ -113,11 +113,11 @@ function renderBattles(data){
   var max=Math.max.apply(null,subs.map(function(s){return num(s.publicScore);}));
   var min=Math.min.apply(null,subs.map(function(s){return num(s.publicScore);}));
   var span=Math.max(1,max-min);
-  html+='<h2>Score Progression</h2><ul class="prog">';
+  html+='<div class="subhead">Score Progression</div><ul class="prog">';
   subs.forEach(function(s){var n=num(s.publicScore);var pct=20+((n-min)/span)*80;html+='<li><div class="plabel">'+esc((s.description||'').slice(0,22))+'</div><div class="bar"><span style="width:'+pct+'%"></span></div><div class="pscore">'+n+'</div></li>';});
   html+='</ul>';
 
-  html+='<h2 style="margin-top:36px">Recent Episodes</h2>';
+  html+='<div class="subhead" style="margin-top:32px">Recent Episodes</div>';
   if(!eps.length){html+='<div class="empty">Episode sync pending. Each submission triggers validation games on Kaggle.</div>';}
   else{
     html+='<table><thead><tr><th>Episode</th><th>Status</th><th>When</th><th></th></tr></thead><tbody>';
@@ -182,7 +182,7 @@ function renderFleet(data){
   var subs=data.submissions||[];
   var el=document.getElementById('panel-fleet');
   if(!subs.length){el.innerHTML='<div class="empty">No submissions in the build log yet.</div>';return;}
-  var html='<h2>Build Log</h2><ul class="log">';
+  var html='<ul class="log">';
   subs.forEach(function(s){var burro=avatarFor(s.description);var n=num(s.publicScore);html+='<li><img class="av" src="images/'+burro+'-avatar.png" onerror="this.style.opacity=0.25" alt="'+burro+'" /><div class="body"><div class="msg">'+esc(s.description||s.fileName||'')+'</div><div class="sub"><span>'+esc((s.date||'').slice(0,16).replace('T',' '))+'</span>'+(n!==null?'<span class="score">'+n+'</span>':'')+pill(s.status)+'</div></div></li>';});
   html+='</ul>';
   el.innerHTML=html;
@@ -195,17 +195,7 @@ function render(data){
   var ft=document.getElementById('footer');if(ft)ft.innerHTML='<a href="https://github.com/neonburro/orbit-wars" target="_blank" rel="noopener" style="color:var(--text-muted)">GitHub</a>  ·  <a href="https://www.kaggle.com/competitions/orbit-wars/leaderboard" target="_blank" rel="noopener" style="color:var(--text-muted)">Live Kaggle Leaderboard</a>  ·  Orbit Wars';
 }
 
-function setupTabs(){
-  document.querySelectorAll('.tab').forEach(function(t){
-    t.addEventListener('click',function(){
-      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
-      document.querySelectorAll('.panel').forEach(function(x){x.classList.remove('active');});
-      t.classList.add('active');
-      var p=document.getElementById('panel-'+t.getAttribute('data-tab'));
-      if(p)p.classList.add('active');
-    });
-  });
-}
+
 
 async function loadLive(){
   try{var res=await fetch('/.netlify/functions/refresh',{cache:'no-store'});if(res.ok){var d=await res.json();if(!d.error)return d;}}catch(e){}
@@ -238,4 +228,4 @@ function setupReplayModal(){
 
 window.addEventListener('resize',responsiveHero);
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#refresh-btn');if(b)load(true);});
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setupTabs();setupReplayModal();load(false);});}else{setupTabs();setupReplayModal();load(false);}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setupReplayModal();load(false);});}else{setupReplayModal();load(false);}

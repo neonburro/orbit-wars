@@ -1,0 +1,1 @@
+python3 make_candidate.py '{"reserve_ratio":0.20,"reserve_ratio_late":0.40,"leader_bonus":1.6,"enemy_bonus":0.9,"comet_bonus":0.6,"prod_weight":1.0,"inbound_thresh":0.85,"overshoot":4}' main.py && kaggle competitions submit -c orbit-wars -f main.py -m "Warbleurs Hammer Scale - aggressive contest, leader_bonus 1.6 overshoot 4"
