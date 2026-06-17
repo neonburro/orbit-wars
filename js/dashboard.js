@@ -89,7 +89,8 @@ function neighborStack(rank){
   return h;
 }
 function neighborRow(e,isMe){
-  return '<div class="nb'+(isMe?' me':'')+'"><span class="nb-rank">#'+e.rank+'</span><span class="nb-name">'+esc((e.name||'').slice(0,18))+'</span><span class="nb-score">'+esc(e.score)+'</span></div>';
+  var href=isMe?'https://www.kaggle.com/theburroship':'https://www.kaggle.com/competitions/orbit-wars/leaderboard';
+  return '<a class="nb'+(isMe?' me':'')+'" href="'+href+'" target="_blank" rel="noopener"><span class="nb-rank">#'+e.rank+'</span><span class="nb-name">'+esc((e.name||'').slice(0,18))+'</span><span class="nb-score">'+esc(e.score)+'</span></a>';
 }
 
 function renderBattles(data){
