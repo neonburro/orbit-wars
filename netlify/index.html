@@ -9,7 +9,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://orbitwars.theburroship.com/" />
 <meta property="og:title" content="The Burroship · Orbit Wars" />
-<meta property="og:description" content="Conquer the void. Live mission control for theburroship's Orbit Wars campaign." />
+<meta property="og:description" content="Command the fleet. Conquer the void. A few burros loose in the cosmos, built at altitude." />
 <meta property="og:image" content="https://orbitwars.theburroship.com/images/hero-tablet.png" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://orbitwars.theburroship.com/images/hero-tablet.png" />
@@ -27,35 +27,37 @@
   * { box-sizing:border-box; margin:0; padding:0; }
   html { background:var(--surface-base); overflow-x:hidden; scroll-behavior:smooth; }
   body { font-family:var(--font-sans); background:var(--surface-base); color:var(--text-primary); line-height:1.5; min-height:100vh; -webkit-font-smoothing:antialiased; }
-  .team-strip { position:fixed; top:0; left:0; right:0; z-index:60; display:flex; align-items:center; gap:14px; padding:10px 24px; background:rgba(7,7,8,0.55); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid rgba(255,255,255,0.05); }
-  .team-strip .tlabel { font-family:var(--font-mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-muted); }
-  .team-strip .agents { display:flex; gap:9px; }
+
+  /* Clean centered transparent team strip, single subtle hairline */
+  .team-strip { position:fixed; top:0; left:0; right:0; z-index:60; display:flex; align-items:center; justify-content:center; padding:12px 24px; background:transparent; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .team-strip .agents { display:flex; gap:11px; }
   .agent { position:relative; width:30px; height:30px; border-radius:50%; }
-  .agent img { width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid rgba(255,255,255,0.10); transition:border-color .2s, transform .2s; background:var(--surface-raised); }
+  .agent img { width:100%; height:100%; border-radius:50%; object-fit:cover; border:1.5px solid rgba(255,255,255,0.12); transition:border-color .2s, transform .2s; background:var(--surface-raised); }
   .agent:hover img { border-color:var(--sky); transform:translateY(-2px); }
   .agent .status-dot { position:absolute; right:-1px; bottom:-1px; width:9px; height:9px; border-radius:50%; background:var(--online); border:2px solid var(--surface-base); box-shadow:0 0 6px rgba(94,140,97,0.7); }
   .agent .tip { position:absolute; top:38px; left:50%; transform:translateX(-50%) translateY(4px); opacity:0; pointer-events:none; white-space:nowrap; background:rgba(7,7,8,0.95); border:1px solid var(--line); border-radius:8px; padding:6px 10px; font-family:var(--font-mono); font-size:10px; color:var(--text-primary); transition:opacity .18s, transform .18s; z-index:70; }
   .agent .tip b { color:var(--sky); text-transform:capitalize; }
   .agent .tip span { color:var(--online); }
   .agent:hover .tip { opacity:1; transform:translateX(-50%) translateY(0); }
-  .nav { position:fixed; top:50px; left:0; right:0; z-index:50; display:flex; align-items:center; justify-content:space-between; padding:16px 28px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); background:rgba(11,11,12,0.30); }
-  .nav .brand { font-weight:600; font-size:18px; letter-spacing:-0.02em; display:flex; align-items:baseline; gap:9px; }
-  .nav .brand .dot { color:var(--sky); }
-  .nav .brand .ow { font-size:11px; font-family:var(--font-mono); letter-spacing:0.18em; text-transform:uppercase; color:var(--heat); font-weight:500; }
-  .nav .links { display:flex; gap:24px; }
-  .nav .links a { font-family:var(--font-mono); font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-secondary); transition:color .2s; }
-  .nav .links a:hover { color:var(--sky); }
-  @media (max-width:640px){ .nav .links{ display:none; } }
-  .hero { position:relative; min-height:94vh; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; text-align:center; padding:140px 24px 64px; overflow:hidden; background:var(--surface-sunken); }
+
+  /* Floating refresh button, top-right, no nav bar */
+  .refresh-btn { position:fixed; top:9px; right:20px; z-index:61; font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:999px; padding:7px 15px; cursor:pointer; display:flex; align-items:center; gap:8px; transition:color .2s, border-color .2s; }
+  .refresh-btn:hover { color:var(--sky); border-color:var(--sky); }
+  .refresh-btn .ico { display:inline-block; width:10px; height:10px; border:1.5px solid currentColor; border-top-color:transparent; border-radius:50%; }
+  .refresh-btn.spinning .ico { animation:spin .7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .hero { position:relative; min-height:100vh; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; text-align:center; padding:140px 24px 72px; overflow:hidden; background:var(--surface-sunken); }
   .hero-img { position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover; object-position:center; }
-  .hero-scrim { position:absolute; inset:0; z-index:1; background:linear-gradient(to bottom, rgba(11,11,12,0.42) 0%, rgba(11,11,12,0.08) 38%, rgba(11,11,12,0.92) 100%); }
+  .hero-scrim { position:absolute; inset:0; z-index:1; background:linear-gradient(to bottom, rgba(11,11,12,0.40) 0%, rgba(11,11,12,0.06) 36%, rgba(11,11,12,0.92) 100%); }
   .hero-inner { position:relative; z-index:2; }
   .eyebrow { font-family:var(--font-mono); font-size:12px; letter-spacing:0.26em; text-transform:uppercase; color:var(--sky-soft); margin-bottom:22px; text-shadow:0 2px 20px rgba(0,0,0,0.6); }
-  .hero h1 { font-weight:700; font-size:clamp(48px,9vw,108px); line-height:0.98; letter-spacing:-0.04em; text-shadow:0 4px 40px rgba(0,0,0,0.7); }
+  .hero h1 { font-weight:700; font-size:clamp(48px,9vw,112px); line-height:0.98; letter-spacing:-0.04em; text-shadow:0 4px 40px rgba(0,0,0,0.7); }
   .hero h1 .dot { color:var(--sky); text-shadow:0 0 24px rgba(143,212,240,0.5); }
-  .hero h1 .ow { display:block; font-weight:500; font-size:0.26em; color:var(--heat); letter-spacing:0.22em; margin-top:0.5em; text-transform:uppercase; font-family:var(--font-mono); }
-  .hero .lede { margin:26px auto 0; max-width:540px; font-size:clamp(15px,2.1vw,18px); color:var(--text-secondary); text-shadow:0 2px 20px rgba(0,0,0,0.7); }
-  .scroll-cue { margin-top:38px; font-family:var(--font-mono); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); }
+  .hero h1 .ow { display:block; font-weight:500; font-size:0.24em; color:var(--heat); letter-spacing:0.24em; margin-top:0.55em; text-transform:uppercase; font-family:var(--font-mono); }
+  .hero .lede { margin:28px auto 0; max-width:560px; font-size:clamp(15px,2.1vw,18px); color:var(--text-secondary); text-shadow:0 2px 20px rgba(0,0,0,0.7); }
+  .scroll-cue { margin-top:40px; font-family:var(--font-mono); font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); }
+
   .wrap { max-width:1080px; margin:0 auto; padding:72px 24px 100px; position:relative; z-index:1; }
   .stamp { font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-align:center; margin-bottom:40px; }
   .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin-bottom:56px; }
@@ -65,7 +67,7 @@
   .stat .value { font-weight:700; font-size:42px; line-height:1; letter-spacing:-0.02em; }
   .stat .value.heat { color:var(--heat); }
   .stat .meta { font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-top:10px; }
-  section { margin-bottom:48px; scroll-margin-top:120px; }
+  section { margin-bottom:48px; scroll-margin-top:80px; }
   h2 { font-weight:700; font-size:26px; letter-spacing:-0.02em; margin-bottom:18px; display:flex; align-items:center; gap:12px; }
   h2::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--heat); }
   table { width:100%; border-collapse:collapse; background:var(--surface-raised); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
@@ -86,24 +88,16 @@
 </head>
 <body>
   <div class="team-strip">
-    <span class="tlabel">team burroship · in orbit</span>
     <div class="agents" id="agents"></div>
   </div>
-  <nav class="nav">
-    <div class="brand">the burroship<span class="dot">.</span><span class="ow">orbit wars</span></div>
-    <div class="links">
-      <a href="#submissions-sec">Submissions</a>
-      <a href="#leaderboard-sec">Leaderboard</a>
-      <a href="https://www.kaggle.com/competitions/orbit-wars" target="_blank" rel="noopener">Kaggle</a>
-    </div>
-  </nav>
+  <button class="refresh-btn" id="refresh-btn"><span class="ico"></span><span id="refresh-label">Refresh</span></button>
   <header class="hero">
     <img class="hero-img" id="hero-img" src="images/hero-desktop.png" alt="Orbit Wars" />
     <div class="hero-scrim"></div>
     <div class="hero-inner">
       <div class="eyebrow">team burroship · kaggle campaign</div>
       <h1>the burroship<span class="dot">.</span><span class="ow">orbit wars</span></h1>
-      <p class="lede">Command the fleet. Conquer the void. A burro loose in the solar system, built at altitude.</p>
+      <p class="lede">Command the fleet. Conquer the void. A few burros loose in the cosmos, built at altitude.</p>
       <div class="scroll-cue">scroll for mission control ↓</div>
     </div>
   </header>
@@ -118,16 +112,13 @@
 var AGENTS=[{name:'warbleur'},{name:'cypher'},{name:'volt'},{name:'ion'},{name:'aster'},{name:'echo'}];
 function pill(s){s=(s||'').toLowerCase();if(s.indexOf('complete')>-1)return '<span class="pill complete">complete</span>';if(s.indexOf('error')>-1||s.indexOf('invalid')>-1)return '<span class="pill error">error</span>';return '<span class="pill pending">pending</span>';}
 function esc(v){return (v==null?'':String(v)).replace(/[<>&]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c];});}
+function ago(iso){if(!iso)return '';var d=new Date(iso);var s=Math.floor((Date.now()-d.getTime())/1000);if(s<60)return s+'s ago';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';}
 function responsiveHero(){var img=document.getElementById('hero-img');if(!img)return;var w=window.innerWidth;if(w<=560)img.src='images/hero-mobile.png';else if(w<=900)img.src='images/hero-tablet.png';else img.src='images/hero-desktop.png';}
 function renderAgents(){var el=document.getElementById('agents');if(!el)return;el.innerHTML=AGENTS.map(function(a){return '<div class="agent"><img src="images/'+a.name+'-avatar.png" alt="'+a.name+'" onerror="this.style.opacity=0.25" /><span class="status-dot"></span><span class="tip"><b>'+a.name+'</b> &middot; <span>in orbit</span></span></div>';}).join('');}
-async function load(){
-  renderAgents();responsiveHero();window.addEventListener('resize',responsiveHero);
-  var data;
-  try{var res=await fetch('data.json?_='+Date.now());data=await res.json();}
-  catch(e){var s=document.getElementById('stats');if(s)s.innerHTML='<div class="empty">No data yet. Run refresh.py and view via local server.</div>';var st=document.getElementById('stamp');if(st)st.textContent='no data loaded';return;}
-  var stamp=document.getElementById('stamp');if(stamp)stamp.textContent='updated '+new Date(data.generated_at).toLocaleString();
+function render(data){
+  var stamp=document.getElementById('stamp');if(stamp)stamp.textContent='updated '+ago(data.generated_at)+'  ·  '+new Date(data.generated_at).toLocaleString();
   var subs=data.submissions||[];var latest=subs[0]||{};
-  var stats=[{label:'Rank',value:data.my_rank?'#'+data.my_rank:'\u2014',meta:data.leaderboard_size?'of '+data.leaderboard_size+' teams':'awaiting score',heat:true},{label:'Best Score',value:data.my_score||(latest.publicScore||'\u2014'),meta:'public score'},{label:'Submissions',value:subs.length,meta:'latest 2 count'},{label:'Latest',value:(latest.status||'\u2014').replace('SubmissionStatus.',''),meta:latest.date?new Date(latest.date).toLocaleDateString():''}];
+  var stats=[{label:'Rank',value:data.my_rank?'#'+data.my_rank:'\u2014',meta:data.leaderboard_size?'of '+data.leaderboard_size+' teams':'awaiting score',heat:true},{label:'Best Score',value:data.my_score||(latest.publicScore||'\u2014'),meta:'public score'},{label:'Submissions',value:subs.length,meta:'tracked'},{label:'Latest',value:(latest.status||'\u2014').replace('SubmissionStatus.',''),meta:latest.date?new Date(latest.date).toLocaleDateString():''}];
   var sg=document.getElementById('stats');if(sg)sg.innerHTML=stats.map(function(s){return '<div class="stat"><div class="label">'+s.label+'</div><div class="value '+(s.heat?'heat':'')+'">'+esc(s.value)+'</div><div class="meta">'+esc(s.meta)+'</div></div>';}).join('');
   var subEl=document.getElementById('submissions');
   if(subEl){if(!subs.length){subEl.innerHTML='<div class="empty">No submissions pulled yet.</div>';}else{var r=subs.map(function(s){return '<tr><td>'+esc(s.ref||'')+'</td><td>'+esc(s.description||s.fileName||'')+'</td><td>'+esc((s.date||'').slice(0,16).replace('T',' '))+'</td><td>'+esc(s.publicScore||'\u2014')+'</td><td>'+pill(s.status)+'</td></tr>';}).join('');subEl.innerHTML='<table><thead><tr><th>Ref</th><th>Description</th><th>Date</th><th>Score</th><th>Status</th></tr></thead><tbody>'+r+'</tbody></table>';}}
@@ -135,7 +126,22 @@ async function load(){
   if(lbEl){if(!lb.length){lbEl.innerHTML='<div class="empty">Leaderboard populates once games run.</div>';}else{var r2=lb.map(function(row,i){var name=row.teamName||row.teamNameNullable||row.team||'';var me=data.team&&name.toLowerCase()===data.team.toLowerCase();return '<tr class="'+(me?'me':'')+'"><td>'+(i+1)+'</td><td>'+esc(name)+'</td><td>'+esc(row.score||'')+'</td><td>'+esc((row.submissionDate||'').slice(0,10))+'</td></tr>';}).join('');lbEl.innerHTML='<table><thead><tr><th>#</th><th>Team</th><th>Score</th><th>Last Sub</th></tr></thead><tbody>'+r2+'</tbody></table>';}}
   var ft=document.getElementById('footer');if(ft)ft.textContent='Orbit Wars \u00b7 '+(data.competition||'');
 }
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',load);}else{load();}
+async function loadLive(){
+  try{var res=await fetch('/.netlify/functions/refresh',{cache:'no-store'});if(res.ok){var d=await res.json();if(!d.error){return d;}}}catch(e){}
+  var r2=await fetch('data.json?_='+Date.now());return await r2.json();
+}
+async function load(spin){
+  renderAgents();responsiveHero();window.addEventListener('resize',responsiveHero);
+  var btn=document.getElementById('refresh-btn');var lbl=document.getElementById('refresh-label');
+  if(spin&&btn){btn.classList.add('spinning');if(lbl)lbl.textContent='Syncing';}
+  var data;
+  try{data=await loadLive();}
+  catch(e){var s=document.getElementById('stats');if(s)s.innerHTML='<div class="empty">No data yet.</div>';var st=document.getElementById('stamp');if(st)st.textContent='no data loaded';if(btn){btn.classList.remove('spinning');if(lbl)lbl.textContent='Refresh';}return;}
+  render(data);
+  if(btn){btn.classList.remove('spinning');if(lbl)lbl.textContent='Refresh';}
+}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#refresh-btn');if(b){load(true);}});
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){load(false);});}else{load(false);}
 </script>
 </body>
 </html>
