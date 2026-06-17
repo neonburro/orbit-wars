@@ -11,3 +11,4 @@ _cand_*.py
 episode-*-replay.json
 deploy.sh
 _archive/
+node_modules/

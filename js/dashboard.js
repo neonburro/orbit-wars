@@ -14,24 +14,82 @@ var LAST_DATA=null;
 
 function renderShip(data){
   var subs=data.submissions||[];
-  var best=bestScore(subs);
   var latest=subs[0]||{};
   var el=document.getElementById('panel-ship');
+  var rank=data.rank||null; // injected from rank.js snapshot
+  // headline live rating: prefer the rank snapshot score (settled ladder rating), else best submission
+  var liveRating=rank&&rank.found&&rank.score?num(rank.score):null;
+  var best=bestScore(subs);
+  if(liveRating===null)liveRating=best;
   var flagshipDesc=(subs.find(function(s){return num(s.publicScore)===best;})||{}).description||'the burroship';
   var burro=avatarFor(flagshipDesc);
+
+  // sorted unique submission scores, high to low
+  var scores=subs.map(function(s){return num(s.publicScore);}).filter(function(n){return n!==null;}).sort(function(a,b){return b-a;});
+  var baselineCount=scores.filter(function(n){return n===600;}).length;
+
   var html='';
   html+='<div class="flagship">';
   html+='<div class="pulse"><span class="dot"></span> live on the ladder</div>';
   html+='<div class="fleet-burro" style="margin-top:18px"><img src="images/'+burro+'-avatar.png" onerror="this.style.opacity=0.25" alt="'+burro+'" /><div class="who"><div class="nm">'+esc(burro)+'</div><div class="rl">flagship commander</div></div></div>';
   html+='<div style="font-family:var(--font-mono);font-size:13px;color:var(--text-secondary);max-width:520px">'+esc(flagshipDesc)+'</div>';
   html+='</div>';
+
   html+='<div class="grid">';
-  html+='<div class="stat"><div class="label">Rank</div><div class="value heat">'+(data.my_rank?'#'+data.my_rank:'\u2014')+'</div><div class="meta">'+(data.leaderboard_size?'of '+data.leaderboard_size+' teams':'awaiting rank')+'</div></div>';
-  html+='<div class="stat"><div class="label">Best Score</div><div class="value win">'+(best!==null?best:'\u2014')+'</div><div class="meta">public score</div></div>';
-  html+='<div class="stat"><div class="label">Submissions</div><div class="value">'+subs.length+'</div><div class="meta">deployed</div></div>';
-  html+='<div class="stat"><div class="label">Latest</div><div class="value" style="font-size:24px">'+(latest.status||'\u2014').replace('SubmissionStatus.','').toLowerCase()+'</div><div class="meta">'+(latest.date?ago(latest.date):'')+'</div></div>';
+
+  // RANK card
+  html+='<div class="stat rank-card"><div class="label">Rank</div>';
+  if(rank&&rank.found){
+    html+='<div class="rank-head"><span class="value heat">#'+rank.rank+'</span>'+movementArrow(rank.movement)+'</div>';
+    html+='<div class="meta">of '+(rank.total_scanned||'\u2014')+' teams'+(rank.best_rank&&rank.best_rank<rank.rank?' \u00b7 best #'+rank.best_rank:'')+'</div>';
+    html+=neighborStack(rank);
+  }else if(rank&&rank.syncing){
+    html+='<div class="value heat" style="font-size:24px">syncing</div><div class="meta">rank updates nightly</div>';
+  }else{
+    html+='<div class="value heat">\u2014</div><div class="meta">awaiting rank sync</div>';
+  }
+  html+='</div>';
+
+  // RATING card (live)
+  html+='<div class="stat"><div class="label">Live Rating</div>';
+  html+='<div class="rank-head"><span class="value win">'+(liveRating!==null?liveRating:'\u2014')+'</span><span class="live-dot" title="pulled live"></span></div>';
+  html+='<div class="meta">skill rating \u00b7 600 baseline</div>';
+  if(scores.length>1){
+    html+='<div class="mini-scores">'+scores.slice(0,5).map(function(n){return '<span'+(n===liveRating?' class="hot"':'')+'>'+n+'</span>';}).join('')+'</div>';
+  }
+  html+='</div>';
+
+  // SUBMISSIONS card
+  html+='<div class="stat"><div class="label">Submissions</div><div class="value">'+subs.length+'</div>';
+  html+='<div class="meta">'+baselineCount+' at baseline 600 \u00b7 '+(latest.date?ago(latest.date):'\u2014')+'</div></div>';
+
+  // LATEST card
+  html+='<div class="stat"><div class="label">Latest</div><div class="value" style="font-size:24px">'+(latest.status||'\u2014').replace('SubmissionStatus.','').toLowerCase()+'</div>';
+  html+='<div class="meta">'+esc((latest.description||'').slice(0,28))+'</div></div>';
+
   html+='</div>';
   el.innerHTML=html;
+}
+
+function movementArrow(m){
+  if(m==null||m===0)return '<span class="move flat" title="no change since last sync">\u2014</span>';
+  if(m>0)return '<span class="move up" title="climbed '+m+' since last sync">\u25b2 '+m+'</span>';
+  return '<span class="move down" title="dropped '+Math.abs(m)+' since last sync">\u25bc '+Math.abs(m)+'</span>';
+}
+
+function neighborStack(rank){
+  var above=(rank.neighbors_above||[]);
+  var below=(rank.neighbors_below||[]);
+  if(!above.length&&!below.length)return '';
+  var h='<div class="neighbors">';
+  above.forEach(function(e){h+=neighborRow(e,false);});
+  h+=neighborRow({rank:rank.rank,name:'theburroship',score:rank.score},true);
+  below.forEach(function(e){h+=neighborRow(e,false);});
+  h+='</div>';
+  return h;
+}
+function neighborRow(e,isMe){
+  return '<div class="nb'+(isMe?' me':'')+'"><span class="nb-rank">#'+e.rank+'</span><span class="nb-name">'+esc((e.name||'').slice(0,18))+'</span><span class="nb-score">'+esc(e.score)+'</span></div>';
 }
 
 function renderBattles(data){
@@ -152,6 +210,10 @@ async function loadLive(){
   try{var res=await fetch('/.netlify/functions/refresh',{cache:'no-store'});if(res.ok){var d=await res.json();if(!d.error)return d;}}catch(e){}
   var r2=await fetch('data.json?_='+Date.now());return await r2.json();
 }
+async function loadRank(){
+  try{var res=await fetch('/.netlify/functions/rank',{cache:'no-store'});if(res.ok)return await res.json();}catch(e){}
+  return null;
+}
 async function load(spin){
   renderAgents();responsiveHero();
   var btn=document.getElementById('refresh-btn');
@@ -159,6 +221,7 @@ async function load(spin){
   var data;
   try{data=await loadLive();}
   catch(e){var st=document.getElementById('stamp');if(st)st.textContent='no data loaded';if(btn)btn.classList.remove('spinning');return;}
+  try{var rank=await loadRank();if(rank)data.rank=rank;}catch(e){}
   render(data);
   if(btn)btn.classList.remove('spinning');
 }

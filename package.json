@@ -1,0 +1,10 @@
+{
+  "name": "orbit-wars",
+  "version": "1.0.0",
+  "description": "theburroship orbit wars dashboard",
+  "private": true,
+  "dependencies": {
+    "@netlify/blobs": "^10.7.9",
+    "@netlify/functions": "^5.3.0"
+  }
+}
