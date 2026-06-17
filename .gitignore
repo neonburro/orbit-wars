@@ -8,3 +8,6 @@ submission.tar.gz
 # Local Netlify folder
 .netlify
 _cand_*.py
+episode-*-replay.json
+deploy.sh
+_archive/
