@@ -1,0 +1,1 @@
+python3 make_candidate.py '{"reserve_ratio":0.08,"reserve_ratio_late":0.42,"leader_bonus":1.4,"enemy_bonus":0.05,"comet_bonus":1.05,"prod_weight":0.52,"inbound_thresh":0.78,"overshoot":4}' main.py && kaggle competitions submit -c orbit-wars -f main.py -m "Volt Reactor locks 600"
