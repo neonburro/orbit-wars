@@ -1,5 +1,5 @@
 import json, os
-os.environ['OW_PARAMS'] = '{"reserve_ratio": 0.338, "reserve_ratio_late": 0.359, "leader_bonus": 0.071, "enemy_bonus": 0.749, "comet_bonus": 0.711, "prod_weight": 1.331, "inbound_thresh": 0.818, "overshoot": 2}'
+os.environ['OW_PARAMS'] = '{"reserve_ratio": 0.343, "reserve_ratio_late": 0.341, "leader_bonus": 0.22, "enemy_bonus": 0.019, "comet_bonus": 0.773, "prod_weight": 1.35, "inbound_thresh": 0.509, "overshoot": 4}'
 import math
 import os
 import json

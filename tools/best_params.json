@@ -1,13 +1,13 @@
 {
-  "win_rate": 1.0,
+  "win_rate": 0.875,
   "params": {
-    "reserve_ratio": 0.239,
-    "reserve_ratio_late": 0.297,
-    "leader_bonus": 1.715,
-    "enemy_bonus": 0.544,
-    "comet_bonus": 0.369,
-    "prod_weight": 1.855,
-    "inbound_thresh": 0.542,
-    "overshoot": 3
+    "reserve_ratio": 0.338,
+    "reserve_ratio_late": 0.359,
+    "leader_bonus": 0.071,
+    "enemy_bonus": 0.749,
+    "comet_bonus": 0.711,
+    "prod_weight": 1.331,
+    "inbound_thresh": 0.818,
+    "overshoot": 2
   }
 }
