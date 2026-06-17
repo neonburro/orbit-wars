@@ -3,7 +3,6 @@
 // captures rank + rating + neighbors, compares to the prior snapshot for movement,
 // and writes the new snapshot to Netlify Blobs. The dashboard reads it via rank.js.
 
-const { schedule } = require("@netlify/functions");
 const { getStore } = require("@netlify/blobs");
 
 const COMP = "orbit-wars";
@@ -35,7 +34,7 @@ function nameOf(r) {
   return r.teamName || r.team || r.teamNameNullable || "";
 }
 
-const handler = schedule("0 7 * * *", async function () {
+const handler = async function () {
   const auth = authHeader();
   if (!auth) {
     return { statusCode: 500, body: "Missing KAGGLE_USERNAME or KAGGLE_KEY" };
@@ -122,6 +121,6 @@ const handler = schedule("0 7 * * *", async function () {
   } catch (e) {
     return { statusCode: 500, body: String(e.message || e) };
   }
-});
+};
 
 module.exports.handler = handler;
