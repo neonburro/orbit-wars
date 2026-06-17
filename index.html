@@ -51,9 +51,11 @@
   .agent:hover .tip { opacity:1; transform:translateX(-50%) translateY(0); }
 
   /* Floating refresh button, top-right, no nav bar */
-  .refresh-btn { position:fixed; top:9px; right:20px; z-index:61; font-family:var(--font-mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-secondary); background:transparent; border:1px solid rgba(255,255,255,0.12); border-radius:999px; padding:7px 15px; cursor:pointer; display:flex; align-items:center; gap:8px; transition:color .2s, border-color .2s; }
+  .refresh-btn { width:34px; height:34px; flex:0 0 auto; color:var(--text-secondary); background:transparent; border:1px solid rgba(255,255,255,0.14); border-radius:50%; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:color .2s, border-color .2s; }
+  .stamp-row { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:40px; }
+  .stamp-row .stamp { margin-bottom:0; }
   .refresh-btn:hover { color:var(--sky); border-color:var(--sky); }
-  .refresh-btn .ico { display:inline-block; width:10px; height:10px; border:1.5px solid currentColor; border-top-color:transparent; border-radius:50%; }
+  .refresh-btn .ico { display:inline-block; width:12px; height:12px; border:1.5px solid currentColor; border-top-color:transparent; border-radius:50%; }
   .refresh-btn.spinning .ico { animation:spin .7s linear infinite; }
   @keyframes spin { to { transform:rotate(360deg); } }
 
@@ -61,6 +63,10 @@
   .hero-img { position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover; object-position:center; }
   .hero-scrim { position:absolute; inset:0; z-index:1; background:linear-gradient(to bottom, rgba(11,11,12,0.40) 0%, rgba(11,11,12,0.06) 36%, rgba(11,11,12,0.92) 100%); }
   .hero-inner { position:relative; z-index:2; }
+  @media (max-width:560px) {
+    .hero { padding:96px 20px 48px; justify-content:center; }
+    .hero-inner { transform:translateY(-4vh); }
+  }
   .eyebrow { font-family:var(--font-mono); font-size:12px; letter-spacing:0.26em; text-transform:uppercase; color:var(--sky-soft); margin-bottom:22px; text-shadow:0 2px 20px rgba(0,0,0,0.6); }
   .hero h1 { font-weight:700; font-size:clamp(48px,9vw,112px); line-height:0.98; letter-spacing:-0.04em; text-shadow:0 4px 40px rgba(0,0,0,0.7); }
   .hero h1 .dot { color:var(--sky); text-shadow:0 0 24px rgba(143,212,240,0.5); }
@@ -100,7 +106,6 @@
   <div class="team-strip">
     <div class="agents" id="agents"></div>
   </div>
-  <button class="refresh-btn" id="refresh-btn"><span class="ico"></span><span id="refresh-label">Refresh</span></button>
   <header class="hero">
     <img class="hero-img" id="hero-img" src="images/hero-desktop.png" alt="Orbit Wars" />
     <div class="hero-scrim"></div>
@@ -112,7 +117,7 @@
     </div>
   </header>
   <div class="wrap">
-    <div class="stamp" id="stamp">awaiting data</div>
+    <div class="stamp-row"><div class="stamp" id="stamp">awaiting data</div><button class="refresh-btn" id="refresh-btn" title="Refresh" aria-label="Refresh"><span class="ico"></span></button></div>
     <div class="grid" id="stats"></div>
     <section id="submissions-sec"><h2>Submissions</h2><div id="submissions"></div></section>
     <section id="leaderboard-sec"><h2>Leaderboard</h2><div id="leaderboard"></div></section>
@@ -142,13 +147,13 @@ async function loadLive(){
 }
 async function load(spin){
   renderAgents();responsiveHero();window.addEventListener('resize',responsiveHero);
-  var btn=document.getElementById('refresh-btn');var lbl=document.getElementById('refresh-label');
-  if(spin&&btn){btn.classList.add('spinning');if(lbl)lbl.textContent='Syncing';}
+  var btn=document.getElementById('refresh-btn');
+  if(spin&&btn){btn.classList.add('spinning');}
   var data;
   try{data=await loadLive();}
-  catch(e){var s=document.getElementById('stats');if(s)s.innerHTML='<div class="empty">No data yet.</div>';var st=document.getElementById('stamp');if(st)st.textContent='no data loaded';if(btn){btn.classList.remove('spinning');if(lbl)lbl.textContent='Refresh';}return;}
+  catch(e){var s=document.getElementById('stats');if(s)s.innerHTML='<div class="empty">No data yet.</div>';var st=document.getElementById('stamp');if(st)st.textContent='no data loaded';if(btn){btn.classList.remove('spinning');}return;}
   render(data);
-  if(btn){btn.classList.remove('spinning');if(lbl)lbl.textContent='Refresh';}
+  if(btn){btn.classList.remove('spinning');}
 }
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#refresh-btn');if(b){load(true);}});
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){load(false);});}else{load(false);}
