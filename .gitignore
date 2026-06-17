@@ -7,3 +7,4 @@ submission.tar.gz
 .kaggle/
 # Local Netlify folder
 .netlify
+_cand_*.py
