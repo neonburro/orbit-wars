@@ -1,9 +1,11 @@
 // netlify/functions/rank.js
-// Serves the rank snapshot written nightly by rank-sync.js (stored in Netlify Blobs).
-// Degrades to a "syncing" payload if the snapshot is not there yet, so the dashboard
-// never breaks before the first scheduled run.
+// Serves the rank snapshot written by rank-sync.js (stored in Netlify Blobs).
+// Reports staleness so the dashboard can decide whether to trigger a background
+// refresh (by calling rank-sync directly). Never breaks: degrades to syncing:true.
 
 const { getStore } = require("@netlify/blobs");
+
+const STALE_MS = 60 * 60 * 1000; // 1 hour
 
 exports.handler = async function () {
   try {
@@ -14,9 +16,16 @@ exports.handler = async function () {
       return {
         statusCode: 200,
         headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
-        body: JSON.stringify({ found: false, syncing: true })
+        body: JSON.stringify({ found: false, syncing: true, stale: true })
       };
     }
+    let stale = true;
+    if (snap.generated_at) {
+      const age = Date.now() - new Date(snap.generated_at).getTime();
+      stale = age > STALE_MS;
+      snap.age_ms = age;
+    }
+    snap.stale = stale;
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
@@ -26,7 +35,7 @@ exports.handler = async function () {
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ found: false, error: String(e.message || e) })
+      body: JSON.stringify({ found: false, error: String(e.message || e), stale: true })
     };
   }
 };

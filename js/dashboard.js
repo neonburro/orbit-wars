@@ -36,6 +36,21 @@ function renderShip(data){
   var scores=subs.map(function(s){return num(s.publicScore);}).filter(function(n){return n!==null;}).sort(function(a,b){return b-a;});
   var baselineCount=scores.filter(function(n){return n===600;}).length;
 
+  // honest performance read for the flagship, only from real data
+  // compare flagship rating against the fleet's other settled ratings (exclude baseline 600s)
+  var settled=subs.filter(function(s){var n=num(s.publicScore);return n!==null&&n!==600&&s.ref!==flag.ref;}).map(function(s){return num(s.publicScore);});
+  var fleetAvg=settled.length?settled.reduce(function(a,b){return a+b;},0)/settled.length:null;
+  var perf=null; // {cls,label}
+  if(flagScore!==null&&flagScore!==600){
+    if(fleetAvg!==null){
+      var diff=flagScore-fleetAvg;
+      if(diff>=8)perf={cls:'good',label:'above fleet avg'};
+      else if(diff<=-8)perf={cls:'bad',label:'below fleet avg'};
+      else perf={cls:'flat',label:'near fleet avg'};
+    }
+    if(flagScore<600&&(!perf||perf.cls!=='good'))perf=perf||{cls:'bad',label:'below baseline'};
+  }
+
   var html='';
   html+='<div class="flagship" data-deployed="'+esc(flag.date||'')+'">';
   html+='<div class="flagship-top">';
@@ -47,7 +62,7 @@ function renderShip(data){
   html+='<div class="flag-stats">';
   html+='<div class="fs"><span class="fs-k">status</span><span class="fs-v '+(isPending?'warn':'on')+'">'+(flagStatus||'\u2014')+'</span></div>';
   html+='<div class="fs"><span class="fs-k">deployed</span><span class="fs-v">'+(flag.date?ago(flag.date):'\u2014')+'</span></div>';
-  html+='<div class="fs"><span class="fs-k">rating</span><span class="fs-v">'+(flagScore!==null?flagScore:'pending')+'</span></div>';
+  html+='<div class="fs"><span class="fs-k">rating</span><span class="fs-v">'+(flagScore!==null?flagScore:'pending')+(perf?' <span class="perf '+perf.cls+'">'+(perf.cls==='good'?'\u25b2':perf.cls==='bad'?'\u25bc':'\u2192')+'</span>':'')+'</span>'+(perf?'<span class="fs-note '+perf.cls+'">'+perf.label+'</span>':'')+'</div>';
   html+='<div class="fs"><span class="fs-k">games played</span><span class="fs-v">'+(gamesPlayed!=null?gamesPlayed:'\u2014')+'</span></div>';
   html+='</div>';
   html+='</div>';
@@ -55,15 +70,14 @@ function renderShip(data){
   html+='<div class="grid">';
 
   // RANK card
-  html+='<div class="stat rank-card"><div class="label">Rank</div>';
+  html+='<div class="stat rank-card"><div class="label">Rank <span class="rank-refresh" id="rank-refresh" style="display:none"><span class="mini-spin"></span> refreshing</span></div>';
   if(rank&&rank.found){
     html+='<div class="rank-head"><span class="value heat">#'+rank.rank+'</span>'+movementArrow(rank.movement)+'</div>';
     html+='<div class="meta">of '+(rank.total_scanned||'\u2014')+' teams'+(rank.best_rank&&rank.best_rank<rank.rank?' \u00b7 best #'+rank.best_rank:'')+'</div>';
     html+=neighborStack(rank);
-  }else if(rank&&rank.syncing){
-    html+='<div class="value heat" style="font-size:24px">syncing</div><div class="meta">rank updates nightly</div>';
   }else{
-    html+='<div class="value heat">\u2014</div><div class="meta">awaiting rank sync</div>';
+    html+='<div class="rank-head"><span class="value heat scanning">scanning</span><span class="mini-spin"></span></div>';
+    html+='<div class="meta">reading the live ladder, this takes a moment</div>';
   }
   html+='</div>';
 
@@ -248,6 +262,26 @@ async function loadRank(){
   try{var res=await fetch('/.netlify/functions/rank',{cache:'no-store'});if(res.ok)return await res.json();}catch(e){}
   return null;
 }
+var RANK_SYNCING=false;
+async function triggerRankSync(){
+  if(RANK_SYNCING)return;
+  RANK_SYNCING=true;
+  // mark the card as refreshing if we already have data showing
+  var badge=document.getElementById('rank-refresh');
+  if(badge)badge.style.display='inline-flex';
+  try{
+    var res=await fetch('/.netlify/functions/rank-sync',{cache:'no-store'});
+    if(res.ok){
+      var fresh=await res.json();
+      if(fresh&&(fresh.found||fresh.syncing!==undefined)&&LAST_DATA){
+        LAST_DATA.rank=fresh;
+        renderShip(LAST_DATA);
+        startFlagClock();
+      }
+    }
+  }catch(e){}
+  RANK_SYNCING=false;
+}
 async function load(spin){
   renderAgents();responsiveHero();
   var btn=document.getElementById('refresh-btn');
@@ -255,9 +289,12 @@ async function load(spin){
   var data;
   try{data=await loadLive();}
   catch(e){var st=document.getElementById('stamp');if(st)st.textContent='no data loaded';if(btn)btn.classList.remove('spinning');return;}
-  try{var rank=await loadRank();if(rank)data.rank=rank;}catch(e){}
+  var rank=null;
+  try{rank=await loadRank();if(rank)data.rank=rank;}catch(e){}
   render(data);
   if(btn)btn.classList.remove('spinning');
+  // auto-trigger a background sync if rank is missing or stale, no manual click needed
+  if(!rank||rank.stale||!rank.found){triggerRankSync();}
 }
 
 function setupReplayModal(){

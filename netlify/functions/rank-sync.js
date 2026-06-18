@@ -89,7 +89,7 @@ const handler = async function () {
       out.found = false;
       out.total_scanned = absoluteIndex;
       await store.setJSON("snapshot", out);
-      return { statusCode: 200, body: "team not found within " + absoluteIndex + " rows" };
+      return { statusCode: 200, headers: { "Content-Type": "application/json" }, body: JSON.stringify(out) };
     }
 
     // above neighbors = window minus the team row itself
@@ -117,9 +117,9 @@ const handler = async function () {
     };
 
     await store.setJSON("snapshot", snapshot);
-    return { statusCode: 200, body: "rank " + teamRow.rank + " of " + absoluteIndex + " (moved " + movement + ")" };
+    return { statusCode: 200, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }, body: JSON.stringify(snapshot) };
   } catch (e) {
-    return { statusCode: 500, body: String(e.message || e) };
+    return { statusCode: 500, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ found: false, error: String(e.message || e) }) };
   }
 };
 
