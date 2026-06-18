@@ -61,6 +61,17 @@ body { font-family:var(--font-sans); background:var(--surface-base); color:var(-
 .flagship .fleet-burro .who .rl { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:3px; }
 .flagship .pulse { display:inline-flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:11px; color:var(--online); text-transform:uppercase; letter-spacing:0.1em; }
 .flagship .pulse .dot { width:8px; height:8px; border-radius:50%; background:var(--online); box-shadow:0 0 8px var(--online); animation:blink 1.8s ease infinite; }
+.flagship .pulse.booting { color:var(--warning); }
+.flagship .pulse.booting .dot { background:var(--warning); box-shadow:0 0 8px var(--warning); }
+.flagship-top { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; position:relative; z-index:1; }
+.flag-clock { font-family:var(--font-mono); font-size:12px; color:var(--sky); letter-spacing:0.04em; }
+.flag-desc { font-family:var(--font-mono); font-size:14px; color:var(--text-secondary); max-width:560px; line-height:1.6; position:relative; z-index:1; }
+.flag-stats { display:grid; grid-template-columns:repeat(4,auto); gap:28px; margin-top:24px; padding-top:20px; border-top:1px solid var(--line); position:relative; z-index:1; }
+.flag-stats .fs { display:flex; flex-direction:column; gap:6px; }
+.flag-stats .fs-k { font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); }
+.flag-stats .fs-v { font-family:var(--font-mono); font-size:18px; font-weight:600; color:var(--text-primary); text-transform:capitalize; }
+.flag-stats .fs-v.on { color:var(--online); }
+.flag-stats .fs-v.warn { color:var(--warning); }
 @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
 
 .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin-bottom:24px; }
@@ -182,6 +193,8 @@ footer { margin-top:60px; font-family:var(--font-mono); font-size:11px; color:va
   .section-head h2 { font-size:21px; }
   .section-tag { display:none; }
   .flagship { border-radius:0; border-left:none; border-right:none; padding:28px 18px; margin-bottom:18px; }
+  .flag-stats { grid-template-columns:1fr 1fr; gap:18px; }
+  .flag-clock { width:100%; }
   .replay-feature { border-radius:0; border-left:none; border-right:none; padding:22px 16px; }
   .rf-actions { margin-top:16px; }
   .btn-primary { width:100%; justify-content:center; }

@@ -68,13 +68,17 @@ exports.handler = async function () {
 
     // Pull episodes for the most recent submissions (best-effort, never blocks the payload)
     let episodes = [];
+    let episode_counts = {};
     try {
-      const top = (subsRaw || []).slice(0, 4);
+      const top = (subsRaw || []).slice(0, 6);
       let all = [];
       for (let i = 0; i < top.length; i++) {
         const sid = top[i].ref || top[i].id;
         if (!sid) continue;
         const eps = await episodesForSubmission(sid);
+        const ref = String(sid);
+        episode_counts[ref] = eps.length;
+        eps.forEach(function (e) { e.subRef = ref; });
         all = all.concat(eps);
       }
       const seen = {};
@@ -83,7 +87,7 @@ exports.handler = async function () {
       episodes = episodes.slice(0, 25);
     } catch (e) { episodes = []; }
 
-    return { statusCode: 200, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }, body: JSON.stringify({ generated_at: new Date().toISOString(), competition: COMP, team: TEAM, my_rank: myRank, my_score: myScore, leaderboard_size: leaderboard_top.length, submissions: submissions, leaderboard_top: leaderboard_top, episodes: episodes }) };
+    return { statusCode: 200, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }, body: JSON.stringify({ generated_at: new Date().toISOString(), competition: COMP, team: TEAM, my_rank: myRank, my_score: myScore, leaderboard_size: leaderboard_top.length, submissions: submissions, leaderboard_top: leaderboard_top, episodes: episodes, episode_counts: episode_counts }) };
   } catch (e) {
     return { statusCode: 500, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ error: String(e.message || e) }) };
   }

@@ -21,18 +21,35 @@ function renderShip(data){
   var liveRating=rank&&rank.found&&rank.score?num(rank.score):null;
   var best=bestScore(subs);
   if(liveRating===null)liveRating=best;
-  var flagshipDesc=(subs.find(function(s){return num(s.publicScore)===best;})||{}).description||'the burroship';
+
+  // FLAGSHIP = newest submission (subs[0]), even while pending
+  var flag=latest;
+  var flagshipDesc=flag.description||'the burroship';
   var burro=avatarFor(flagshipDesc);
+  var flagStatus=(flag.status||'').replace('SubmissionStatus.','').toLowerCase();
+  var isPending=flagStatus.indexOf('pending')>-1||flagStatus.indexOf('running')>-1;
+  var counts=data.episode_counts||{};
+  var gamesPlayed=flag.ref&&counts[flag.ref]!=null?counts[flag.ref]:null;
+  var flagScore=num(flag.publicScore);
 
   // sorted unique submission scores, high to low
   var scores=subs.map(function(s){return num(s.publicScore);}).filter(function(n){return n!==null;}).sort(function(a,b){return b-a;});
   var baselineCount=scores.filter(function(n){return n===600;}).length;
 
   var html='';
-  html+='<div class="flagship">';
-  html+='<div class="pulse"><span class="dot"></span> live on the ladder</div>';
+  html+='<div class="flagship" data-deployed="'+esc(flag.date||'')+'">';
+  html+='<div class="flagship-top">';
+  html+='<div class="pulse'+(isPending?' booting':'')+'"><span class="dot"></span> '+(isPending?'deploying to the ladder':'live on the ladder')+'</div>';
+  html+='<div class="flag-clock" id="flag-clock"></div>';
+  html+='</div>';
   html+='<div class="fleet-burro" style="margin-top:18px"><img src="images/'+burro+'-avatar.png" onerror="this.style.opacity=0.25" alt="'+burro+'" /><div class="who"><div class="nm">'+esc(burro)+'</div><div class="rl">flagship commander</div></div></div>';
-  html+='<div style="font-family:var(--font-mono);font-size:13px;color:var(--text-secondary);max-width:520px">'+esc(flagshipDesc)+'</div>';
+  html+='<div class="flag-desc">'+esc(flagshipDesc)+'</div>';
+  html+='<div class="flag-stats">';
+  html+='<div class="fs"><span class="fs-k">status</span><span class="fs-v '+(isPending?'warn':'on')+'">'+(flagStatus||'\u2014')+'</span></div>';
+  html+='<div class="fs"><span class="fs-k">deployed</span><span class="fs-v">'+(flag.date?ago(flag.date):'\u2014')+'</span></div>';
+  html+='<div class="fs"><span class="fs-k">rating</span><span class="fs-v">'+(flagScore!==null?flagScore:'pending')+'</span></div>';
+  html+='<div class="fs"><span class="fs-k">games played</span><span class="fs-v">'+(gamesPlayed!=null?gamesPlayed:'\u2014')+'</span></div>';
+  html+='</div>';
   html+='</div>';
 
   html+='<div class="grid">';
@@ -193,6 +210,32 @@ function render(data){
   var stamp=document.getElementById('stamp');if(stamp)stamp.textContent='updated '+ago(data.generated_at);
   renderShip(data);renderBattles(data);renderFleet(data);
   var ft=document.getElementById('footer');if(ft)ft.innerHTML='<a href="https://github.com/neonburro/orbit-wars" target="_blank" rel="noopener" style="color:var(--text-muted)">GitHub</a>  ·  <a href="https://www.kaggle.com/competitions/orbit-wars/leaderboard" target="_blank" rel="noopener" style="color:var(--text-muted)">Live Kaggle Leaderboard</a>  ·  Orbit Wars';
+  startFlagClock();
+}
+
+var FLAG_CLOCK_TIMER=null;
+function startFlagClock(){
+  if(FLAG_CLOCK_TIMER)clearInterval(FLAG_CLOCK_TIMER);
+  function tick(){
+    var fc=document.getElementById('flag-clock');
+    if(!fc)return;
+    var card=document.querySelector('.flagship');
+    if(!card)return;
+    var dep=card.getAttribute('data-deployed');
+    if(!dep){fc.textContent='';return;}
+    var t=new Date(dep.replace(' ','T')+(dep.indexOf('Z')>-1?'':'Z')).getTime();
+    if(isNaN(t)){fc.textContent='';return;}
+    var s=Math.floor((Date.now()-t)/1000);
+    if(s<0)s=0;
+    var d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),sec=s%60;
+    var str='in service ';
+    if(d>0)str+=d+'d ';
+    if(d>0||h>0)str+=h+'h ';
+    str+=m+'m '+sec+'s';
+    fc.textContent=str;
+  }
+  tick();
+  FLAG_CLOCK_TIMER=setInterval(tick,1000);
 }
 
 
